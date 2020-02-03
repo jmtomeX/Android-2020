@@ -5,61 +5,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
-    app:layout_goneMarginBottom="20dp"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    app:layout_goneMarginBottom="20dp"
+    tools:context=".LoginActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Adivina un número
-
-         entre 1 y 3!"
+        android:text="email"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_margin="10dp"
         android:textSize="24sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/boxTxtRes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        />
 
     <EditText
-        android:id="@+id/inputNumber"
+        android:id="@+id/boxtxtEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:inputType="number"
-        android:maxWidth="30dp"/>
-
+        android:inputType="textEmailAddress" />
     <TextView
-        android:id="@+id/boxTxtPlays"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
         android:layout_gravity="center_horizontal"
+        android:text="password"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:layout_margin="10dp"
         android:textSize="24sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/boxtxtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/btnPlay"
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Button" />
-
+        android:text="Login" />
 </LinearLayout>
