@@ -15,7 +15,7 @@
         android:layout_gravity="center_horizontal"
         android:text="Adivina un número
 
-         entre 1 y 3!"
+         entre 1 y 10!"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="24sp"
@@ -45,6 +45,17 @@
 
     <TextView
         android:id="@+id/boxTxtPlays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        />
+    <TextView
+        android:id="@+id/boxTxtRecord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""

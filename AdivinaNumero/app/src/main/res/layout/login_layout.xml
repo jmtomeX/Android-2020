@@ -26,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:text="iremti2@gmail.com"
         android:inputType="textEmailAddress" />
     <TextView
         android:layout_width="wrap_content"
@@ -43,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:text="11111111"
         android:inputType="textPassword" />
 
     <Button

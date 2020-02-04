@@ -37,7 +37,8 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     if (email.trim().matches(emailPattern)) {
                         if (email.equals(email_admin) && password.equals(passw_admin)) {
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, TragaperrasActivity.class);
                             //Pasar la var email entre activitis
                             intent.putExtra("email", email);
                             startActivity(intent);
