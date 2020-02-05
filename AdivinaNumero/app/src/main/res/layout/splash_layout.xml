@@ -6,16 +6,16 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
+    android:padding="20dp"
     tools:context=".SplashActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Adivina un número entre 1 y 3!"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:layout_margin="20dp"
+        android:text="Adivina un número entre 1 y 3!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="24sp"
         android:textStyle="bold" />
 </androidx.constraintlayout.widget.ConstraintLayout>

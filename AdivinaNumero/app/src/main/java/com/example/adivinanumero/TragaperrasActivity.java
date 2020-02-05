@@ -2,28 +2,30 @@ package com.example.adivinanumero;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.util.Random;
+
 
 public class TragaperrasActivity extends AppCompatActivity {
-    private Button mbtnjugar;
     private int[] imagenes = {R.drawable.img_0,R.drawable.img_1,R.drawable.img_2,R.drawable.img_3,R.drawable.img_4,R.drawable.img_5,R.drawable.img_6};
+    private ImageView[] imageViews = new ImageView[4];
+    private Button mbtnjugar;
     private ImageView imageView0;
     private ImageView imageView1;
     private ImageView imageView2;
     private ImageView imageView3;
-    private ImageView[] imageViews = new ImageView[4];
-    private int[] jugada = new int[imagenes.length];
+
     private  Button mbtnJugar;
+    private TextView mBoxTxtRes;
 
-    private int numAleatorio ;
-    private int imgAleatoria;
-
+    private int saldo_inicial;
+    private JTragaperras newMachine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +45,26 @@ public class TragaperrasActivity extends AppCompatActivity {
         imageViews[3] = findViewById(R.id.imageView3);
 
         mbtnJugar = findViewById(R.id.btnJugar);
+        mBoxTxtRes = findViewById(R.id.boxTxtRes);
 
-        final Random r = new Random();
+        SharedPreferences prefs = getSharedPreferences("saldo", Context.MODE_PRIVATE);
+        saldo_inicial = prefs.getInt("saldo", 10);
+
+
+        newMachine = new JTragaperras(imagenes.length,4, saldo_inicial);
 
         //Registrar evto click sobre boton jugar:
         mbtnJugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                obtenerJugada();
-                calcularPremio();
+                newMachine.obtenerJugada();
+                int[] combinacion = newMachine.getCombinacion();
+
+                //Actualizamos la pantalla segun la jugada obtenida:
+                for (int i =0; i<combinacion.length ; i++) {
+                    int imgAleatoria = imagenes[combinacion[i]];
+                    imageViews[i].setImageResource(imgAleatoria);
+                }
 
                 /*
                 int numAleatorio = r.nextInt(imagenes.length);
@@ -83,38 +96,19 @@ public class TragaperrasActivity extends AppCompatActivity {
                     ((ImageView)findViewById(resId)).setImageResource(imgAleatoria);
                 }
                 */
+                int premio = newMachine.calcularPremio();
+                mBoxTxtRes.setText(String.format("El premio ha sido de %s y el saldo es %s", premio, newMachine.getSaldo()));
 
             }
         });
     }
 
-    private void obtenerJugada() {
-        for ( int i=0; i< imagenes.length; i++) {
-            jugada[i] = 0;
-        }
-        for(int i = 0; i < imageViews.length; i++) {
-            numAleatorio = (int) (Math.random() * 6);
-            // comprobamos el número y le añadimos 1
-            jugada[numAleatorio] ++;
-            imgAleatoria = imagenes[numAleatorio];
-            imageViews[i].setImageResource(imgAleatoria);
 
-        }
-    }
-
-    private int calcularPremio() {
-        //Comprobar si hay una o incluso dos parejas
-         int[] premios =  {-1,0,2,5,10};
-         int premio = 0;
-        for(int i = 0; i < jugada.length; i++){
-            if(jugada[i] > premio){ //
-                premio += premios[jugada[i]];
-                Log.e("TragaperrasActivity", "FOR " + jugada[i]);
-            }
-        }
-        // descontamos 1 a la partida por jugar
-        premio += premios[0];
-        Log.e("TragaperrasActivity", "El premio ha sido de " + premio);
-        return premio;
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences prefs = getSharedPreferences("saldo", Context.MODE_PRIVATE);
+        //Guardar en las preferencias el nuevo saldo:
+        prefs.edit().putInt("saldo", newMachine.getSaldo()).apply();
     }
 }

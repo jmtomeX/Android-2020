@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".AhorcadoActivity">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:layout_marginBottom="20dp"
+        android:text="Juego el Ahorcado" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvLetra0"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+        <TextView
+            android:id="@+id/tvLetra1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+        <TextView
+            android:id="@+id/tvLetra2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+        <TextView
+            android:id="@+id/tvLetra3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+        <TextView
+            android:id="@+id/tvLetra4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+        <TextView
+            android:id="@+id/tvLetra5"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+        <TextView
+        android:id="@+id/tvLetra6"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:textAlignment="center"
+        android:text="_" />
+        <TextView
+            android:id="@+id/tvLetra7"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+        <TextView
+            android:id="@+id/tvLetra8"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+        <TextView
+            android:id="@+id/tvLetra9"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textAlignment="center"
+            android:text="_" />
+
+
+
+    </LinearLayout>
+</LinearLayout>

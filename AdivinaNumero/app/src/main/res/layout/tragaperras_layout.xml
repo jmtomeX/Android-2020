@@ -60,5 +60,19 @@
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:text="Jugar" />
+
+        <TextView
+            android:id="@+id/boxTxtRes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            />
+
     </LinearLayout>
 </LinearLayout>

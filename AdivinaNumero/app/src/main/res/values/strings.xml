@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">AdivinaNumero</string>
+    <string-array name="palabras_array">
+        <item>carro</item>
+        <item>rato</item>
+        <item>ruedas</item>
+        <item>sonrojado</item>
+        <item>rito</item>
+        <item>emparejado</item>
+        <item>amarillo</item>
+        <item>cocina</item>
+        <item>desarrollo</item>
+        <item>oceano</item>
+    </string-array>
+
+
 </resources>
