@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
+    android:gravity="center"
     tools:context=".AhorcadoActivity">
 
 
@@ -17,10 +18,17 @@
         android:textAlignment="center"
         android:layout_marginBottom="20dp"
         android:text="Juego el Ahorcado" />
+
+    <ImageView
+        android:id="@+id/imageAhorcado"
+        android:layout_height="250dp"
+        android:layout_width="250dp"
+        app:srcCompat="@drawable/ahorcado0" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -104,7 +112,27 @@
             android:textAlignment="center"
             android:text="_" />
 
-
-
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/inputLetras"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="" />
+
+    <Button
+        android:id="@+id/btnCheck"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Comprobar" />
+    <TextView
+        android:id="@+id/txtVpalabra"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:textAlignment="center"
+        android:text="" />
 </LinearLayout>
