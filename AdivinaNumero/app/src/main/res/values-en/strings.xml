@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">AdivinaNumero</string>
+    <string name="login_email">Set email:</string>
+    <string name="premio">The prize is %s and the balance is %s</string>
+    <string-array name="palabras_array">
+        <item> car </item>
+        <item> while </item>
+        <item> wheels </item>
+        <item> blushing </item>
+        <item> rite </item>
+        <item> paired </item>
+        <item> yellow </item>
+        <item> kitchen </item>
+        <item> development </item>
+        <item> ocean </item>
+        <item> Limerencia </item>
+        <item> Petricor </item>
+        <item> Melifluo </item>
+        <item> ocean </item>
+        <item> Celaje </item>
+        <item> Apapachar </item>
+    </string-array>
+
+
+</resources>

@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AdivinaNumero</string>
+    <string name="login_email">Introduce tu email</string>
+    <string name="premio">El premio ha sido de %s y el saldo es %s</string>
     <string-array name="palabras_array">
         <item>carro</item>
         <item>rato</item>

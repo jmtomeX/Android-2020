@@ -2,8 +2,13 @@ package com.example.adivinanumero;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 public class AhorcadoActivity extends AppCompatActivity {
@@ -25,8 +33,9 @@ public class AhorcadoActivity extends AppCompatActivity {
     private ImageView imageAhorcado;
     private Button mbtnCheck;
     private TextView txtVpalabra;
-
-
+    private MediaPlayer mediaPlayerFail;
+    private MediaPlayer mediaPlayerOk;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +46,11 @@ public class AhorcadoActivity extends AppCompatActivity {
         imageAhorcado = findViewById(R.id.imageAhorcado);
         mbtnCheck = findViewById(R.id.btnCheck);
         txtVpalabra = findViewById(R.id.txtVpalabra);
+        // sonidos
+        mediaPlayerFail = MediaPlayer.create(this, R.raw.bang);
+        mediaPlayerOk = MediaPlayer.create(this, R.raw.ping);
+        // envio a otra página
+        intent = new Intent(Intent.ACTION_WEB_SEARCH);
 
         //Enlazo desde el codigo con los TextViews de las letras:
         for (int i = 0; i < MAX_SIZE; i++) {
@@ -87,10 +101,13 @@ public class AhorcadoActivity extends AppCompatActivity {
                                 int resId = getResources().getIdentifier(cadenaImg, "drawable", getPackageName());
                                 imageAhorcado.setImageResource(resId);
                                 txtVpalabra.setText(String.format("Errores %d", contErrores));
+                                mediaPlayerFail.start();
                             } else {
+                                mediaPlayerOk.start();
                                 if (ah.getPalabra().length() == ah.getAciertos()) {
                                     Toast.makeText(getApplicationContext(), "Has ganado el juego.", Toast.LENGTH_SHORT).show();
                                     mbtnCheck.setEnabled(false);
+
                                 }
                             }
                             entradaLetra.setText("");
@@ -100,12 +117,36 @@ public class AhorcadoActivity extends AppCompatActivity {
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Has perdido el juego.", Toast.LENGTH_SHORT).show();
-                        txtVpalabra.setText(ah.getPalabra());
+                        //txtVpalabra.setText(ah.getPalabra());
+                        txtVpalabra.setText(Html.fromHtml("<u>"+ah.getPalabra()+"</u>"));
+                        txtVpalabra.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                try {
+                                    // Buscar una palabra en google
+                                    String escapedQuery = URLEncoder.encode(ah.getPalabra(), "UTF-8");
+                                    intent.putExtra(SearchManager.QUERY, escapedQuery);
+                                    startActivity(intent);
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        // convertimos a html link
+                        /*
+                        txtVpalabra.setText(
+                                Html.fromHtml("Mi <strong>página web</strong>: " +
+                                        "<a href='" + url + "'>" + ah.getPalabra() + "</a>"));
+
+                         */
                         mbtnCheck.setEnabled(false);
+
+
                     }
                 }
             });
 
+        // deteedtar el intro
         entradaLetra.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
@@ -115,8 +156,9 @@ public class AhorcadoActivity extends AppCompatActivity {
             }
         });
 
-        // sonidos al pinchar y multi idioma y pantalla de selección de juego ListView.
-        // buscar la palabra al pinchar sobre ella en google
-        // taclado con botones
+        //  * sonidos al pinchar y multi idioma y
+        //  * buscar la palabra al pinchar sobre ella en google, intent
+        // pantalla de selección de juego ListView.
+        // teclado con botones
     }
 }
