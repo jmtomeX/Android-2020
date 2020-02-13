@@ -36,6 +36,7 @@ public class AhorcadoActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayerFail;
     private MediaPlayer mediaPlayerOk;
     private Intent intent;
+    private ImageView btnImgHelp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class AhorcadoActivity extends AppCompatActivity {
         imageAhorcado = findViewById(R.id.imageAhorcado);
         mbtnCheck = findViewById(R.id.btnCheck);
         txtVpalabra = findViewById(R.id.txtVpalabra);
+        btnImgHelp = findViewById(R.id.btnImgHelp);
         // sonidos
         mediaPlayerFail = MediaPlayer.create(this, R.raw.bang);
         mediaPlayerOk = MediaPlayer.create(this, R.raw.ping);
@@ -95,13 +97,7 @@ public class AhorcadoActivity extends AppCompatActivity {
                                 tvLetras[i].setText(s);
                             }
                             if (!resultado) {
-                                contErrores++;
-                                ah.setContErrores(contErrores);
-                                String cadenaImg = String.format("ahorcado%s", contErrores);
-                                int resId = getResources().getIdentifier(cadenaImg, "drawable", getPackageName());
-                                imageAhorcado.setImageResource(resId);
-                                txtVpalabra.setText(String.format("Errores %d", contErrores));
-                                mediaPlayerFail.start();
+                                sumarFallo();
                             } else {
                                 mediaPlayerOk.start();
                                 if (ah.getPalabra().length() == ah.getAciertos()) {
@@ -156,9 +152,30 @@ public class AhorcadoActivity extends AppCompatActivity {
             }
         });
 
+        btnImgHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent (AhorcadoActivity.this, AyudaAcitivity.class);
+                Intent intent = new Intent (AhorcadoActivity.this, HelpActivity.class);
+                startActivityForResult(intent, 0);
+                sumarFallo();
+            }
+        });
+
         //  * sonidos al pinchar y multi idioma y
         //  * buscar la palabra al pinchar sobre ella en google, intent
         // pantalla de selección de juego ListView.
         // teclado con botones
+    }
+
+    private void sumarFallo() {
+        int contErrores = ah.getContErrores();
+        contErrores++;
+        ah.setContErrores(contErrores);
+        String cadenaImg = String.format("ahorcado%s", contErrores);
+        int resId = getResources().getIdentifier(cadenaImg, "drawable", getPackageName());
+        imageAhorcado.setImageResource(resId);
+        txtVpalabra.setText(String.format("Errores %d", contErrores));
+        mediaPlayerFail.start();
     }
 }
