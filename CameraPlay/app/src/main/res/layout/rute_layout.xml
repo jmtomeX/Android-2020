@@ -7,52 +7,32 @@
     android:layout_margin="20dp"
     android:orientation="vertical"
     app:layout_goneMarginBottom="20dp"
-    tools:context=".Rute_activity">
-
-    <TextView
-        android:id="@+id/txtEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_gravity="center_horizontal"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_margin="20dp"
-        />
+    tools:context=".rute_activity">
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:text="Selecciona cámara o mapa"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:layout_margin="10dp"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="Seleccionar Juego"/>
+        android:textStyle="bold" />
 
     <Button
-        android:id="@+id/btnAdivina"
+        android:id="@+id/btnCam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Adivina Número" />
+        android:text="Cámara" />
 
     <Button
-        android:id="@+id/btntragaperras"
+        android:id="@+id/btnMap"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Tragaperras" />
-
-    <Button
-        android:id="@+id/btnAhorcado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Ahorcado" />
+        android:text="Mapa" />
 
 </LinearLayout>

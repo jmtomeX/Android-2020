@@ -1,10 +1,10 @@
 package com.example.cameraplay;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 /* Create an Intent that will start the MainActivity. */
-                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent mainIntent = new Intent(SplashActivity.this, rute_activity.class);
                 startActivity(mainIntent);
                 finish();
             }

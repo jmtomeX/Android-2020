@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Rute_activity extends AppCompatActivity {
     private Button mBtnAdivina;
@@ -15,6 +16,10 @@ public class Rute_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rute_layout);
+        TextView resEmail = findViewById(R.id.txtEmail);
+        //Recogemos las variables que nos puedan enviar, como un post en js:
+        String email = getIntent().getExtras().getString("email");
+        resEmail.setText(String.format("Bienvenido %s", email));
 
         mBtnAdivina = findViewById(R.id.btnAdivina);
         mBtTragaperras = findViewById(R.id.btntragaperras);

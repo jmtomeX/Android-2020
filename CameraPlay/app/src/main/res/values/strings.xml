@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CameraPlay</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="str_rb_normal">Normal</string>
+    <string name="str_rb_satellite">Satellite</string>
+    <string name="str_rb_terrain">Terrain</string>
 </resources>

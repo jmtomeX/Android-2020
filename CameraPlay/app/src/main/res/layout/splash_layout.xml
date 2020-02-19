@@ -9,6 +9,7 @@
     android:layout_gravity="center"
     android:padding="20dp"
     tools:context=".SplashActivity">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,7 +17,8 @@
         android:layout_margin="20dp"
         android:text="Cámara"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textSize="24sp"
+        android:textColor="#F44336"
+        android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

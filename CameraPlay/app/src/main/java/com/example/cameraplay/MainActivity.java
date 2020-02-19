@@ -1,33 +1,24 @@
 package com.example.cameraplay;
 
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.graphics.BitmapFactory;
-import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.cameraplay.R;
-
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-
 
 public class MainActivity extends Activity {
     private static final int CAMERA_REQUEST = 1888;
@@ -36,15 +27,20 @@ public class MainActivity extends Activity {
     Bitmap photo;
     private File file;
     private ArrayList<File> files;
+    private String FILES_PATH;
 
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageView = findViewById(R.id.ivFoto);
         save = findViewById(R.id.save);
         Button photoButton = this.findViewById(R.id.btnOpenCamera);
         Button listarGaleria = this.findViewById(R.id.listar);
+
+        //Obtenemos el path base donde se guardan las fotos que se hacen:
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("images", Context.MODE_PRIVATE);
+        FILES_PATH = directory.getPath();
 
         photoButton.setOnClickListener(new View.OnClickListener() {
 
@@ -87,7 +83,9 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, VerfotoActivity.class);
                 //intent.putExtra("path",file.getAbsolutePath());
-                intent.putExtra("path",file.getParent());
+                //Con el metodo getParent obtenemos el path hasta la carpeta donde se guarda el archivo
+                //intent.putExtra("path",file.getParent());
+                intent.putExtra("path",FILES_PATH);
                 //intent.putExtra("image_name",file.getName());
                 startActivity(intent);
             }

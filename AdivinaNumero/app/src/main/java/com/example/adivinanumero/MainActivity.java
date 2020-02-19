@@ -23,12 +23,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Recogemos las variables que nos puedan enviar, como un post en js:
-        String email = getIntent().getExtras().getString("email");
+
         Button mbtnPlay = findViewById(R.id.btnPlay);
 
         boxCont = findViewById(R.id.boxTxtPlays);
-        TextView resEmail = findViewById(R.id.boxTxtRes);
+
         final TextView resRecord = findViewById(R.id.boxTxtRecord);
         //Mostramos el record actual:
         SharedPreferences prefs = getSharedPreferences("recordPersonal", Context.MODE_PRIVATE);
@@ -37,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
             resRecord.setText("Aun no hay record");
         else
             resRecord.setText(String.format("Tu record es %d", record_actual));
-        //resEmail.setText("Bienvenido "+ email );
-        resEmail.setText(String.format("Bienvenido %s", email));
+
 
         final EditText minputNumber = findViewById(R.id.inputNumber);
 

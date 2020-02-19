@@ -97,7 +97,7 @@ public class TragaperrasActivity extends AppCompatActivity {
                 }
                 */
                 int premio = newMachine.calcularPremio();
-                mBoxTxtRes.setText(String.format(getString(R.string.premio), premio, newMachine.getSaldo()));
+                mBoxTxtRes.setText(String.format(getString(R.string.premio), String.valueOf(premio), String.valueOf(newMachine.getSaldo())));
 
             }
         });
