@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MyPlaces</string>
+
+    <string name="main_title">LUGARES FAVORITOS</string>
+    <string name="place_add">Nuevo lugar</string>
+
+
+    <string name="place_title_edit">EDITAR LUGAR</string>
+    <string name="place_title_new">NUEVO LUGAR</string>
+
+    <string name="place_save">Guardar</string>
+    <string name="place_del">Eliminar</string>
+
+    <string name="place_hint_name">Nombre del lugar</string>
+    <string name="place_hint_city">Ciudad</string>
+    <string name="place_hint_url">Url</string>
+    <string name="place_hint_lat">Lat</string>
+    <string name="place_hint_lon">Lon</string>
+    <string name="place_hint_web">Web</string>
+    <string name="place_hint_video">Video</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="text_size_s">14sp</dimen>
+    <dimen name="text_size_m">18sp</dimen>
+    <dimen name="text_size_mm">21sp</dimen>
+    <dimen name="text_size_l">25sp</dimen>
+    <dimen name="text_size_xl">40sp</dimen>
+
+    <dimen name="margin_s">3dp</dimen>
+    <dimen name="margin_m">5dp</dimen>
+    <dimen name="margin_l">10dp</dimen>
+
+</resources>
