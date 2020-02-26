@@ -22,6 +22,7 @@ public class LoginActivity extends Sync_Activity {
     private JUser mUser;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,14 +191,14 @@ public class LoginActivity extends Sync_Activity {
             } catch (Exception e) {}
             if (usuario_valido) {
                 String newToken = mUser.getToken();
-                Toast.makeText(LoginActivity.this,"OK, token: "+ newToken ,Toast.LENGTH_LONG).show();
+                //Toast.makeText(LoginActivity.this,"OK, token: "+ newToken ,Toast.LENGTH_LONG).show();
                 //TODO: Guardar en las preferencias para poder llamar a otras apis:
                 SharedPreferences prefs = getSharedPreferences("datos",Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("prefToken", newToken);
                 editor.putString("prefName", mUser.getName());
                 editor.putString("prefEmail", mUser.getEmail());
-                editor.putInt("prefEmail", mUser.getID());
+                editor.putInt("prefID", mUser.getID());
                 editor.apply();
 
                 finish();
@@ -210,6 +211,8 @@ public class LoginActivity extends Sync_Activity {
 
 
     }
+
+
 
 
 }

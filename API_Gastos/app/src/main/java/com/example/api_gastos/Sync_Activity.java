@@ -1,5 +1,8 @@
 package com.example.api_gastos;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +20,27 @@ public class Sync_Activity extends AppCompatActivity {
     //Cuando utilizo un emulador (maquina virtual) esta sería la dirección del servidor:
     //public final String SW_ROOT="http://10.0.2.2/Laravel/proyecto-v2-gastos/gastos_v2/public/api";
     public final static String SW_ROOT="http://192.168.43.168/Laravel/proyecto-v2-gastos/gastos_v2/public/api";
+    protected JUser mUser;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mUser = null;
+        //Leemos de las preferencias el usuario actual:
+        SharedPreferences prefs = getSharedPreferences("datos", Context.MODE_PRIVATE);
+        String token = prefs.getString("prefToken", "");
+        String name = prefs.getString("prefName", "");
+        String email = prefs.getString("prefEmail", "");
+        int id = prefs.getInt("prefID", 0);
+        if (id>0) {
+            mUser = new JUser(id, email,name,token);
+        } else {
+            //Eliminamos las preferencias:
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.clear();
+            editor.apply();
+        }
+    }
 
     protected String ServerConnection(JSONObject jsonRequest, String sw_ruta, String method, String token){
         try {
