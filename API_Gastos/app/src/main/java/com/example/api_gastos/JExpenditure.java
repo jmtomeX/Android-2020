@@ -8,13 +8,15 @@ public class JExpenditure {
     private  float mCantidad;
     private String mTipoGasto;
     private String mCategoria;
+    private  int m_id;
 
-    public JExpenditure ( String descripcion, String fecha, float cantidad, String tipoGasto, String categoria) {
+    public JExpenditure ( String descripcion, String fecha, float cantidad, String tipoGasto, String categoria, int id) {
         mDescripcion = descripcion;
         mFecha = fecha;
         mCantidad = cantidad;
         mTipoGasto = tipoGasto;
         mCategoria = categoria;
+        m_id = id;
     }
 
     public String getmDescripcion() {
@@ -27,8 +29,8 @@ public class JExpenditure {
         return mCantidad;
     }
 
-    public String getmTipoGasto() {
-        return mTipoGasto;
+    public int getid() {
+        return m_id;
     }
 
     public String getmCategoria() {

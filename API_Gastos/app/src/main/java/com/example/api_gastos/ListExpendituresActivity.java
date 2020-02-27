@@ -1,7 +1,9 @@
 package com.example.api_gastos;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,12 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,31 +28,91 @@ import java.util.ArrayList;
 
 public class ListExpendituresActivity extends Sync_Activity {
     private final String TAG = "ListExpendituresAct";
-    private ArrayList listExpenditure;
+    private ArrayList<JExpenditure> listExpenditure;
     private ListView mListView;
     private FloatingActionButton mbtnNewExpenditure;
+    private int itemSelected;
+    private int itemSelectedPos;
+    private ImageView ivUser;
+    private TextView mTxtName;
+    final Context context = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_expenditures_layout);
         mbtnNewExpenditure = findViewById(R.id.btnNewExpenditure);
         mListView = findViewById(R.id.lvGastos);
-
-        mbtnNewExpenditure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ListExpendituresActivity.this, NewExpenditureActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        ivUser = findViewById(R.id.ivUser);
         //Comprobar si mUser tiene algo o null:
-        if (mUser!=null) {
-            //TODO:: llamar al async task
-            new ListExpendituresActivity.expenditureGetAsync().execute();
-        } else {
+        if (mUser==null)
             finish();
+        else {
+            //Cargar la foto del usuario desde el servidor, con la librería Picasso
+            Picasso.with(ListExpendituresActivity.this)
+                    .load("http://192.168.43.168/Laravel/proyecto-v2-gastos/gastos_v2/public/img_users/user_" + mUser.getID() + ".jpg")
+                    .resize(100, 100)
+                    .into(ivUser);
+            mTxtName = findViewById(R.id.txtName);
+            mTxtName.setText(mUser.getName());
+
+            mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    itemSelected = listExpenditure.get(position).getid();
+                    itemSelectedPos = position;
+
+                    // Diálogo confirmación borrar gasto
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            context);
+
+                    // set title
+                    alertDialogBuilder.setTitle("Your Title");
+
+                    // set dialog message
+                    alertDialogBuilder
+                            .setMessage("Desas eliminar el gasto?")
+                            .setCancelable(false)
+                            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // if this button is clicked, close
+                                    // current activity
+                                    //MainActivity.this.finish();
+                                    new deleteExpenditureAsync().execute();
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // if this button is clicked, just close
+                                    // the dialog box and do nothing
+                                    dialog.cancel();
+                                }
+                            });
+
+
+                    // create alert dialog
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+
+                    // show it
+                    alertDialog.show();
+
+                    return false;
+                }
+            });
+
+            mbtnNewExpenditure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ListExpendituresActivity.this, NewExpenditureActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new ListExpendituresActivity.expenditureGetAsync().execute();
     }
 
     //
@@ -93,7 +158,8 @@ public class ListExpendituresActivity extends Sync_Activity {
                         int cantidad =row.getInt("amount");
                         String tipo_gasto =row.getString("type");
                         String categoria =row.getString("category");
-                        JExpenditure exp = new JExpenditure( desc ,date , cantidad, tipo_gasto, categoria);
+                        int id = row.getInt("id");
+                        JExpenditure exp = new JExpenditure( desc ,date , cantidad, tipo_gasto, categoria,id);
                         Log.e(TAG,"Exp: "+exp);
                         listExpenditure.add(exp);
 
@@ -220,6 +286,90 @@ public class ListExpendituresActivity extends Sync_Activity {
         }
     }
 
+    // Eliminar un item de gasto
+    private int  deleteExp() {
+        int res = 0;
+        JSONObject jsonResponse=null;
+        try {
+            String respuesta = ServerConnection(null,"ExpenditureDelete/"+itemSelected,"GET",mUser.getToken());
+            if (respuesta!=null)
+                try {
+                    jsonResponse = new JSONObject(respuesta);
+                } catch (Exception e) {
+                    //Log.e(TAG,"Sync_Eventos doIn: (jsonResponse):"+e.getMessage());
+                    jsonResponse=null;
+                }
+            if (jsonResponse!=null) {
+                //Comprobamos si "success" es true o false:
+                boolean success = jsonResponse.getBoolean("success");
+                if (success) {
+                    res = jsonResponse.getInt("data");
+                } else {
+                    String msg = jsonResponse.getString("message");
+                }
+            } else {
+                throw new Exception("JSONResponse es nulo");
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, String.format("%s: %s",ex.getStackTrace()[0].getMethodName(),ex.getMessage()));
+        }
+        return res;
+
+    }
+
+    private class deleteExpenditureAsync extends AsyncTask<String, Integer, Integer> {
+        private ProgressDialog mPD;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //Creamos el dialogo de espera:
+            mPD = new ProgressDialog(ListExpendituresActivity.this);
+            mPD.setCancelable(false);
+            mPD.setTitle("Conectando...");
+            mPD.show();
+        }
+
+        @Override
+        protected Integer doInBackground(String... parametros) {
+            int expend = 0;
+            try {
+                expend = deleteExp();
+
+
+            } catch (Exception ex) {
+                Log.e("ServerConnection", String.format("%s: %s",ex.getStackTrace()[0].getMethodName(),ex.getMessage()));
+            }
+
+            return expend;
+        }
+
+        @Override
+        protected void onPostExecute(Integer expend) {
+            super.onPostExecute(expend);
+            try {
+                mPD.cancel();
+                if(expend > 0) {
+                    Toast.makeText(ListExpendituresActivity.this,
+                            "Eliminado", Toast.LENGTH_SHORT).show();
+                    //Eliminado, TODO: Refrescar la lista:
+                    //new ListExpendituresActivity.expenditureGetAsync().execute();
+                    //Estático, sin volver a pedir el listado al SW:
+                    listExpenditure.remove(itemSelectedPos);
+                    ExpendituresAdapter expAdapter = new ExpendituresAdapter(ListExpendituresActivity.this,
+                            R.layout.list_expenditures_row_layout,
+                            listExpenditure);
+                    mListView.setAdapter(expAdapter);
+                } else {
+                    Toast.makeText(ListExpendituresActivity.this,
+                            "No se han encontado el expendi", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+
+            }
+        }
+    }
+
+    // Diálogo
 
 
 

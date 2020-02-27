@@ -1,15 +1,20 @@
 package com.example.api_gastos;
 
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,12 +37,56 @@ public class NewExpenditureActivity extends Sync_Activity {
     private JCategory mCatSelected;
     private JType mTypeSelected;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_expenditure_layout);
         mySpinner = findViewById(R.id.spCategorias);
         mySpinnerTypes = findViewById(R.id.spTypes);
+
+        final DatePicker dateExp = findViewById(R.id.datepick);
+        final Button mbtnEnviar =  findViewById(R.id.btnSend);
+        final EditText mtxtCantidad =  findViewById(R.id.txtCantidad);
+        final EditText mtxtDescripcion =  findViewById(R.id.txtDescripcion);
+        mbtnEnviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Botón para guardar los datos del formulario
+                // fecha actual
+                //final Calendar c = Calendar.getInstance();
+                int year = dateExp.getYear();
+                int month = dateExp.getMonth() + 1;
+                int day = dateExp.getDayOfMonth();
+
+
+                String date = year + "-" +month + "-" + day;
+                int id = mTypeSelected.getmId();
+                String idString = String.valueOf(id);
+
+                if( TextUtils.isEmpty(mtxtCantidad.getText())){
+                    //Toast.makeText(NewExpenditureActivity.this,"Cantidad requerida",Toast.LENGTH_SHORT).show();
+                    mtxtCantidad.setError("Campo requerido!");
+                    return;
+                }
+                double amount=0d;
+                try {
+                    amount = Double.parseDouble(mtxtCantidad.getText().toString());
+                } catch (Exception e) {
+                    mtxtCantidad.setError("Introduce cantidad válida");
+                    return;
+                }
+
+                String amountCad = String.valueOf(amount);
+
+                if( TextUtils.isEmpty( mtxtDescripcion.getText().toString())) {
+                    mtxtDescripcion.setError("Campo requerido!");
+                    return;
+                }
+                new saveExpPostAsync().execute(date,mtxtDescripcion.getText().toString(),amountCad,idString);
+            }
+        });
+
         if (mUser == null)
             finish();
         else {
@@ -324,6 +373,7 @@ public class NewExpenditureActivity extends Sync_Activity {
         }
     }
 
+
     public class SpinTypeAdapter extends ArrayAdapter<JType> {
 
         // Your sent context
@@ -380,6 +430,90 @@ public class NewExpenditureActivity extends Sync_Activity {
 
             return label;
         }
+    }
+
+    // Guardar un gasto date description	amount	type_id	file
+    private boolean saveExpenditure(String  date, String id, String amount, String descripcion){
+        boolean res = false;
+        JSONObject jsonResponse=null;
+        try {
+            JSONObject jsonRequest = new JSONObject();
+            jsonRequest.put("fecha", date);
+            jsonRequest.put("descripcion", descripcion);
+            jsonRequest.put("amount", amount);
+            jsonRequest.put("tipo_id", id);
+            String respuesta=ServerConnection(jsonRequest,"newExpenditure","POST",mUser.getToken());
+            if (respuesta!=null)
+                try {
+                    jsonResponse = new JSONObject(respuesta);
+                } catch (Exception e) {
+                    //Log.e(TAG,"Sync_Eventos doIn: (jsonResponse):"+e.getMessage());
+                    jsonResponse=null;
+                }
+            if (jsonResponse!=null) {
+
+                //Comprobamos si "success" es true o false:
+                boolean success = jsonResponse.getBoolean("success");
+                if (success) {
+                    int new_id = jsonResponse.getInt("data");
+                    if (new_id>0) res = true;
+                } else {
+                    String msg = jsonResponse.getString("message");
+                }
+            } else {
+                throw new Exception("JSONResponse es nulo");
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, String.format("%s: %s",ex.getStackTrace()[0].getMethodName(),ex.getMessage()));
+        }
+        return res;
+    }
+
+    private class saveExpPostAsync extends AsyncTask<String, Integer, Boolean> {
+        private ProgressDialog mPD;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //Creamos el dialogo de espera:
+            mPD = new ProgressDialog(NewExpenditureActivity.this);
+            mPD.setCancelable(false);
+            mPD.setTitle("Guardando gasto en la base de datos\nEspere por favor...");
+            mPD.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... parametros) {
+            boolean insertado = false;
+            try {
+
+                String date = parametros[0];
+                String description = parametros[1];
+                String amount = parametros[2];
+                String type_id = parametros[3];
+
+                insertado = saveExpenditure(date, type_id, amount, description);
+
+            } catch (Exception ex) {
+                Log.e("ServerConnection", String.format("%s: %s",ex.getStackTrace()[0].getMethodName(),ex.getMessage()));
+            }
+
+            return insertado;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean insertado) {
+            super.onPostExecute(insertado);
+            try {
+                mPD.cancel();
+            } catch (Exception e) {}
+            if (insertado) {
+                finish();
+            } else {
+                Toast.makeText(NewExpenditureActivity.this,"Gasto no gaurdado",Toast.LENGTH_LONG).show();
+            }
+        }
+
+
     }
 
 
