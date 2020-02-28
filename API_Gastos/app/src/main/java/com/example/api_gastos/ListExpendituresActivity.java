@@ -112,10 +112,11 @@ public class ListExpendituresActivity extends Sync_Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Para que se refresque el contenido cada vez que vuelve al primer plano(Eliminar un item)
         new ListExpendituresActivity.expenditureGetAsync().execute();
     }
 
-    //
+    // Servicio web y el método
     private int expenditures(){
         int totalExpenditures = 0;
         JSONObject jsonResponse=null;
@@ -182,6 +183,10 @@ public class ListExpendituresActivity extends Sync_Activity {
         return totalExpenditures;
     }
 
+    // Hilo asincrono necesario para la llamada de servicios web
+    // 1º param el [array] que recibe el doInBackground
+    //2º param es para hacer una "barra de progreso"
+    // 3º Es lo que devuelve el do y recibe el onPostExucute
     private class expenditureGetAsync extends AsyncTask<String, Integer, Integer> {
         private ProgressDialog mPD;
         @Override
@@ -227,10 +232,9 @@ public class ListExpendituresActivity extends Sync_Activity {
         }
     }
 
+    // Esto va asociado al ListView, recoge un array de objetos y los carga en un ListView
     public class ExpendituresAdapter extends ArrayAdapter<JExpenditure> {
-
         private Context mContext;
-
         public ExpendituresAdapter(Context context, int resource, ArrayList<JExpenditure> gastos) {
             super(context, resource, gastos);
             mContext = context;

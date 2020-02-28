@@ -1,10 +1,10 @@
 package com.example.api_gastos;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
     private final int SPLASH_DISPLAY_LENGTH = 1000;
@@ -14,6 +14,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_layout);
 
         //Una vez creada esta pantalla a los img_3 segundos saltamos al main:
+        // También puede implementar hilos
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
